@@ -6,5 +6,6 @@ namespace PulseImageProject.Logic.Contracts
 	public interface IImageLogic
 	{
 		public bool SaveImage(Image img, IFormFile file);
+		byte[] GetSelectedImages(int[] imageIds);
 	}
 }

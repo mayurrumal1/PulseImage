@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PulseImageProject.Data.Repos.Contracts;
 using PulseImageProject.Logic.Contracts;
 using PulseImageProject.Models;
 using System;
@@ -14,11 +15,13 @@ namespace PulseImageProject.Controllers
 	{
 		private readonly ILogger<HomeController> _logger;
 		private readonly IImageLogic _imageLogic;
+		private readonly IImageRepository _imageRepo;
 
-		public HomeController(ILogger<HomeController> logger, IImageLogic imageLogic)
+		public HomeController(ILogger<HomeController> logger, IImageLogic imageLogic, IImageRepository imageRepo)
 		{
 			_logger = logger;
 			_imageLogic = imageLogic;
+			_imageRepo = imageRepo;
 		}
 
 		[HttpGet]
@@ -51,6 +54,28 @@ namespace PulseImageProject.Controllers
 			}
 
 			return Json(new { result = false, message = "Form was not submitted!" });
+		}
+
+		[HttpGet]
+		public IActionResult Images()
+		{
+			var images = _imageRepo.GetImages().Select(img => new ImageListViewModel
+			{
+				Id = img.Id,
+				Title = img.Title,
+				ImageText = img.ImageText,
+				ImageName = img.ImageName,
+				DateConverted = img.DateConverted
+			});
+			return View(images);
+		}
+
+		[HttpGet]
+		public IActionResult Download(string imageIds)
+		{
+			var imgArr = Array.ConvertAll(imageIds.Split(',').ToArray(), int.Parse);
+			var stream = _imageLogic.GetSelectedImages(imgArr);
+			return File(stream, "application/zip", $"Images:{DateTime.Now.ToShortDateString()}.zip");
 		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

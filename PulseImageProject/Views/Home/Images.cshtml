@@ -1,0 +1,72 @@
+﻿@model IEnumerable<PulseImageProject.Models.ImageListViewModel>
+
+@{
+    ViewData["Title"] = "Images";
+}
+
+<h4>Imags</h4>
+
+<div class="alert alert-dismissable fade show" role="alert" hidden>
+    <span class="alert-msg"></span>
+    <button type="button" class="close" onclick="$(this).parent().hide();">
+        <span>&times;</span>
+    </button>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Title</th>
+            <th>Image Text Length</th>
+            <th>Image Name</th>
+            <th>Date Converted</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    <input type="checkbox" name="imageId" value="@item.Id" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @item.ImageText.Length
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImageName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateConverted)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a href="#" id="submit" class="btn btn-primary">Download Files</a>
+
+<script src="~/js/utility.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $('#submit').click(function(e) {
+            
+            var selectedImages = [];
+            $('input[type=checkbox]:checked').each(function() {
+                selectedImages.push($(this).val());
+            });
+
+            if(selectedImages.length == 0) {
+                notify("error", "Please select atleast one image.");
+            }
+            else {
+                selectedImages = selectedImages.toString();
+                $('#submit').attr('href', '/home/download?imageIds=' + selectedImages);
+                notify("success", "Your file will be downloaded shortly.");
+            }
+
+        })
+        
+    });
+</script>
