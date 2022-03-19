@@ -16,6 +16,9 @@ namespace PulseImageProject.Data.Models
 
 		public string ImageName { get; set; }
 
+		[Column(TypeName = "nvarchar(10)")]
+		public string ImageType { get; set; }
+
 		[Column(TypeName = "datetime")]
 		public DateTime DateConverted { get; set; } = DateTime.Now;
 	}

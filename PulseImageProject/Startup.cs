@@ -6,6 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PulseImageProject.Data;
+using PulseImageProject.Data.Repos;
+using PulseImageProject.Data.Repos.Contracts;
+using PulseImageProject.Logic;
+using PulseImageProject.Logic.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +31,8 @@ namespace PulseImageProject
 		{
 			services.AddControllersWithViews();
 			services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection")));
+			services.AddScoped<IImageLogic, ImageLogic>();
+			services.AddScoped<IImageRepository, ImageRepository>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
