@@ -65,5 +65,10 @@ namespace PulseImageProject.Logic
 			}
 		}
 
+		private void FakeCommit()
+		{
+			// You are here for fake commit. This will be reverted shortly.
+		}
+
 	}
 }
