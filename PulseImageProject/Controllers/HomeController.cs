@@ -37,19 +37,16 @@ namespace PulseImageProject.Controllers
 			{
 				return Json(new { result = false, message = "The view model is empty." });
 			}
-			if (vm.ImageFile != null)
+			if (vm.ImageFile is { } file && file.Length > 0)
 			{
-				if (vm.ImageFile.Length > 0)
+				var image = vm.MapToData();
+				if (_imageLogic.SaveImage(image, file))
 				{
-					var image = vm.MapToData();
-					if (_imageLogic.SaveImage(image, vm.ImageFile))
-					{
-						return Json(new { result = true, message = "Image has been uploaded successfully!" });
-					}
-					else
-					{
-						return Json(new { result = false, message = "File should be smaller than 5 mb." });
-					}
+					return Json(new { result = true, message = "Form has been submitted successfully!" });
+				}
+				else
+				{
+					return Json(new { result = false, message = "File should be smaller than 5 MB." });
 				}
 			}
 

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Images";
 }
 
-<h4>Imags</h4>
+<h4>Images</h4>
 
 <div class="alert alert-dismissable fade show" role="alert" hidden>
     <span class="alert-msg"></span>
@@ -44,7 +44,8 @@
         }
     </tbody>
 </table>
-<a href="#" id="submit" class="btn btn-primary">Download Files</a>
+<a href="#" id="submit" class="btn btn-primary" role="button">Download Files</a>
+<a href="#" id="clear" class="btn btn-secondary" role="button">Clear</a>
 
 <script src="~/js/utility.js"></script>
 <script type="text/javascript">
@@ -67,6 +68,10 @@
             }
 
         })
+
+        $('#clear').click(function() {
+            $('input[type=checkbox]:checked').prop('checked',false);
+        });
         
     });
 </script>
